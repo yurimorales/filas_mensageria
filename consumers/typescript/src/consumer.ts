@@ -1,4 +1,5 @@
 import * as amqp from 'amqplib';
+import * as fs from 'fs';
 
 const host = process.env.RABBITMQ_HOST || 'rabbitmq';
 const port = process.env.RABBITMQ_PORT || 5672;
@@ -22,8 +23,6 @@ async function start() {
       const logEntry = `[${timestamp}] TS Consumer received: ${message}\n`;
       
       console.log(logEntry);
-      
-      const fs = require('fs');
       fs.appendFileSync(logFile, logEntry);
       
       channel.ack(msg);
