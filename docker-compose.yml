@@ -41,6 +41,7 @@ services:
       context: ./consumers/php
       dockerfile: Dockerfile
     container_name: php-consumer
+    restart: unless-stopped
     environment:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
@@ -58,6 +59,7 @@ services:
       context: ./consumers/typescript
       dockerfile: Dockerfile
     container_name: ts-consumer
+    restart: unless-stopped
     environment:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
@@ -75,6 +77,7 @@ services:
       context: ./consumers/python
       dockerfile: Dockerfile
     container_name: python-consumer
+    restart: unless-stopped
     environment:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
