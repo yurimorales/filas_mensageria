@@ -1,13 +1,15 @@
-FROM php:8.2-cli-alpine
-
-RUN apk add --no-cache curl && \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+FROM composer:1.10 AS builder
 
 WORKDIR /app
 
-COPY composer.json ./
+COPY publisher/composer.json ./
 RUN composer update --no-dev --optimize-autoloader
 
-COPY publisher.php .
+FROM php:8.2-cli-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/vendor ./vendor
+COPY publisher/publisher.php .
 
 CMD ["php", "publisher.php"]
