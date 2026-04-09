@@ -47,24 +47,87 @@ filas_mensageria/
 ├── publisher/
 │   ├── Dockerfile
 │   ├── composer.json
+│   ├── composer.lock
 │   └── publisher.php
 ├── consumers/
 │   ├── php/
 │   │   ├── Dockerfile
+│   │   ├── composer.json
+│   │   ├── composer.lock
 │   │   └── consumer.php
 │   ├── typescript/
 │   │   ├── Dockerfile
 │   │   ├── package.json
+│   │   ├── package-lock.json
 │   │   ├── tsconfig.json
 │   │   └── src/
 │   │       └── consumer.ts
 │   └── python/
 │       ├── Dockerfile
+│       ├── requirements.txt
 │       └── consumer.py
 ├── logs/
 ├── docker-compose.yml
 └── README.md
 ```
+
+## Installing Dependencies
+
+### Docker (Automatic)
+
+Dependencies are installed automatically during `docker-compose up --build`.
+
+### Local Development (Without Docker)
+
+#### PHP (Publisher e Consumer)
+
+```bash
+# Publisher
+cd publisher
+composer install
+php publisher.php "message"
+
+# Consumer PHP
+cd consumers/php
+composer install
+php consumer.php
+```
+
+#### TypeScript (Consumer)
+
+```bash
+cd consumers/typescript
+npm install
+npm run build
+npm start
+```
+
+#### Python (Consumer)
+
+```bash
+cd consumers/python
+pip install -r requirements.txt
+python consumer.py
+```
+
+#### Python Publisher (Alternativa)
+
+Se quiser criar um publisher em Python:
+
+```bash
+cd publisher
+pip install pika
+python publisher.py "message"
+```
+
+### Dependency Manager by Service
+
+| Service | Manager | Command |
+|---------|---------|---------|
+| Publisher (PHP) | Composer | `composer install` |
+| PHP Consumer | Composer | `composer install` |
+| TS Consumer | npm | `npm install` |
+| Python Consumer | pip | `pip install -r requirements.txt` |
 
 ## Message Flow
 
@@ -90,10 +153,37 @@ filas_mensageria/
 
 ## Usage
 
-### Start all services
+### Start all services (Docker)
 
 ```bash
 docker-compose up --build
+```
+
+Este comando:
+1. Constrói as imagens Docker para cada serviço
+2. Instala as dependências automaticamente
+3. Inicia todos os containers (RabbitMQ + 3 consumers)
+4. Os consumers ficam rodando em foreground esperando mensagens
+
+### Rodar Consumers Localmente (Sem Docker)
+
+Os consumers podem ser executados diretamente no terminal (Windows/Linux/macOS):
+
+```bash
+# Terminal 1: PHP Consumer
+cd consumers/php
+composer install
+php consumer.php
+
+# Terminal 2: TypeScript Consumer
+cd consumers/typescript
+npm install && npm run build
+npm start
+
+# Terminal 3: Python Consumer
+cd consumers/python
+pip install -r requirements.txt
+python consumer.py
 ```
 
 ### Send messages via publisher
@@ -102,11 +192,17 @@ docker-compose up --build
 # Single message
 docker-compose run publisher php publisher.php "Hello World"
 
-# Interactive mode
+# Interactive mode (Ctrl+C para sair)
 docker-compose run publisher php publisher.php --interactive
 
 # Send N messages
 docker-compose run publisher php publisher.php --loop 10
+```
+
+**Modo interativo local (sem Docker):**
+```bash
+cd publisher
+php publisher.php --interactive
 ```
 
 ### View logs
