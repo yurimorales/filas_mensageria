@@ -3,7 +3,7 @@ FROM composer:latest AS builder
 WORKDIR /app
 
 COPY composer.json ./
-RUN composer update --no-dev --optimize-autoloader
+RUN composer update --no-dev --optimize-autoloader --ignore-platform-req=ext-sockets
 
 FROM php:8.2-cli-alpine
 
