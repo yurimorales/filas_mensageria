@@ -1,10 +1,10 @@
 # RabbitMQ Multi-Language Consumers Demo
 
-## Overview
+## Visão Geral
 
-Learning/demo project demonstrating pub/sub messaging pattern with RabbitMQ and multi-language consumers (PHP, TypeScript, Python).
+Projeto de aprendizado/demonstração que implementa o padrão de mensageria pub/sub com RabbitMQ e consumers em múltiplas linguagens (PHP, TypeScript, Python).
 
-## Architecture
+## Arquitetura
 
 ```
                     ┌─────────────────┐
@@ -12,33 +12,33 @@ Learning/demo project demonstrating pub/sub messaging pattern with RabbitMQ and 
                     │  (fanout exch)  │
                     └────────┬────────┘
                              │
-           ┌─────────────────┼─────────────────┐
-           │                 │                 │
-           ▼                 ▼                 ▼
-    ┌────────────┐   ┌────────────┐   ┌────────────┐
-    │ PHP        │   │ TypeScript │   │ Python     │
-    │ Consumer   │   │ Consumer   │   │ Consumer   │
-    └────────────┘   └────────────┘   └────────────┘
-           │                 │                 │
-           └─────────────────┼─────────────────┘
-                             ▼
-                      ┌───────────┐
-                      │   Logs    │
-                      │  (files)  │
-                      └───────────┘
+            ┌─────────────────┼─────────────────┐
+            │                 │                 │
+            ▼                 ▼                 ▼
+     ┌────────────┐   ┌────────────┐   ┌────────────┐
+     │ PHP        │   │ TypeScript │   │ Python     │
+     │ Consumer   │   │ Consumer   │   │ Consumer   │
+     └────────────┘   └────────────┘   └────────────┘
+            │                 │                 │
+            └─────────────────┼─────────────────┘
+                              ▼
+                       ┌───────────┐
+                       │   Logs    │
+                       │  (files)  │
+                       └───────────┘
 ```
 
-## Services
+## Serviços
 
-| Service | Language | Image | Purpose |
-|---------|----------|-------|---------|
-| rabbitmq | - | rabbitmq:3-management | Message broker with web UI |
-| publisher | PHP | custom | CLI tool to send messages |
-| php-consumer | PHP 8.2 | custom | Consumes and logs messages |
-| ts-consumer | TypeScript/Node 20 | custom | Consumes and logs messages |
-| python-consumer | Python 3.12 | custom | Consumes and logs messages |
+| Serviço | Linguagem | Imagem | Propósito |
+|---------|-----------|--------|-----------|
+| rabbitmq | - | rabbitmq:3-management | Broker de mensagens com UI web |
+| publisher | PHP | custom | CLI para enviar mensagens |
+| php-consumer | PHP 8.2 | custom | Consome e loga mensagens |
+| ts-consumer | TypeScript/Node 20 | custom | Consome e loga mensagens |
+| python-consumer | Python 3.12 | custom | Consome e loga mensagens |
 
-## Directory Structure
+## Estrutura de Diretórios
 
 ```
 filas_mensageria/
@@ -71,13 +71,13 @@ filas_mensageria/
 └── README.md
 ```
 
-## Installing Dependencies
+## Instalação de Dependências
 
-### Docker (Automatic)
+### Docker (Automático)
 
-Dependencies are installed automatically during `docker-compose up --build`.
+As dependências são instaladas automaticamente durante `docker-compose up --build`.
 
-### Local Development (Without Docker)
+### Desenvolvimento Local (Sem Docker)
 
 #### PHP (Publisher e Consumer)
 
@@ -85,7 +85,7 @@ Dependencies are installed automatically during `docker-compose up --build`.
 # Publisher
 cd publisher
 composer install
-php publisher.php "message"
+php publisher.php "mensagem"
 
 # Consumer PHP
 cd consumers/php
@@ -112,48 +112,48 @@ python consumer.py
 
 #### Python Publisher (Alternativa)
 
-Se quiser criar um publisher em Python:
+Para criar um publisher em Python:
 
 ```bash
 cd publisher
 pip install pika
-python publisher.py "message"
+python publisher.py "mensagem"
 ```
 
-### Dependency Manager by Service
+### Gerenciador de Dependências por Serviço
 
-| Service | Manager | Command |
-|---------|---------|---------|
+| Serviço | Gerenciador | Comando |
+|---------|-------------|---------|
 | Publisher (PHP) | Composer | `composer install` |
 | PHP Consumer | Composer | `composer install` |
 | TS Consumer | npm | `npm install` |
 | Python Consumer | pip | `pip install -r requirements.txt` |
 
-## Message Flow
+## Fluxo de Mensagens
 
-1. **Publisher** sends messages to `messages_exchange` (fanout type)
-2. **Consumers** (all 3) receive every message from the queue
-3. Each consumer writes to its own log file in `/logs`:
+1. **Publisher** envia mensagens para `messages_exchange` (tipo fanout)
+2. **Consumers** (todos os 3) recebem todas as mensagens da fila
+3. Cada consumer escreve em seu próprio arquivo de log em `/logs`:
    - `/logs/php.log`
    - `/logs/ts.log`
    - `/logs/python.log`
 
-## Configuration
+## Configuração
 
-### Environment Variables
+### Variáveis de Ambiente
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| RABBITMQ_HOST | rabbitmq | RabbitMQ server hostname |
-| RABBITMQ_PORT | 5672 | RabbitMQ AMQP port |
-| RABBITMQ_USER | guest | RabbitMQ username |
-| RABBITMQ_PASSWORD | guest | RabbitMQ password |
-| RABBITMQ_QUEUE | messages | Queue name |
-| RABBITMQ_EXCHANGE | messages_exchange | Fanout exchange name |
+| Variável | Padrão | Descrição |
+|----------|--------|-----------|
+| RABBITMQ_HOST | rabbitmq | Hostname do servidor RabbitMQ |
+| RABBITMQ_PORT | 5672 | Porta AMQP do RabbitMQ |
+| RABBITMQ_USER | guest | Usuário do RabbitMQ |
+| RABBITMQ_PASSWORD | guest | Senha do RabbitMQ |
+| RABBITMQ_QUEUE | messages | Nome da fila |
+| RABBITMQ_EXCHANGE | messages_exchange | Nome do exchange fanout |
 
-## Usage
+## Como Usar
 
-### Start all services (Docker)
+### Iniciar todos os serviços (Docker)
 
 ```bash
 docker-compose up --build
@@ -186,16 +186,16 @@ pip install -r requirements.txt
 python consumer.py
 ```
 
-### Send messages via publisher
+### Enviar mensagens via Publisher
 
 ```bash
-# Single message
-docker-compose run publisher php publisher.php "Hello World"
+# Mensagem única
+docker-compose run publisher php publisher.php "Olá Mundo"
 
-# Interactive mode (Ctrl+C para sair)
+# Modo interativo (Ctrl+C para sair)
 docker-compose run publisher php publisher.php --interactive
 
-# Send N messages
+# Enviar N mensagens
 docker-compose run publisher php publisher.php --loop 10
 ```
 
@@ -205,39 +205,41 @@ cd publisher
 php publisher.php --interactive
 ```
 
-### View logs
+### Visualizar Logs
 
 ```bash
-# Follow all logs
+# Seguir todos os logs em tempo real
 tail -f logs/*.log
 
-# View specific log
+# Ver log específico
 cat logs/php.log
+cat logs/ts.log
+cat logs/python.log
 ```
 
-### RabbitMQ Management UI
+### Interface de Gerenciamento do RabbitMQ
 
-Access at: http://localhost:15672
+Acesse em: http://localhost:15672
 
-- Username: `guest`
-- Password: `guest`
+- Usuário: `guest`
+- Senha: `guest`
 
-## Cross-Platform Compatibility
+## Compatibilidade Cross-Platform
 
-- Dockerfiles use Alpine/slim base images
-- Works on Windows, macOS, and Linux
-- Consumers run as long-running CLI processes
-- Logs written to mounted volume for host access
+- Dockerfiles usam imagens Alpine/slim
+- Funciona no Windows, macOS e Linux
+- Consumers rodam como processos CLI de longa duração
+- Logs gravados em volume montado para acesso do host
 
-## Log Format
+## Formato dos Logs
 
-Each consumer writes in the format:
+Cada consumer escreve no formato:
 
 ```
-[YYYY-MM-DD HH:MM:SS] <Consumer> Consumer received: <message>
+[YYYY-MM-DD HH:MM:SS] <Consumer> Consumer received: <mensagem>
 ```
 
-Example:
+Exemplo:
 ```
 [2026-04-08 14:30:15] PHP Consumer received: Hello from publisher
 [2026-04-08 14:30:15] TS Consumer received: Hello from publisher
