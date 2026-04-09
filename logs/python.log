@@ -1,6 +1,0 @@
-[2026-04-09 01:46:21] Python Consumer received: Final Complete Test
-[2026-04-09 01:48:13] Python Consumer received: All 3 Working!
-[2026-04-09 01:51:04] Python Consumer received: Message #1 from Publisher
-[2026-04-09 01:51:05] Python Consumer received: Message #4 from Publisher
-[2026-04-09 01:51:07] Python Consumer received: Message #7 from Publisher
-[2026-04-09 01:51:08] Python Consumer received: Message #10 from Publisher
