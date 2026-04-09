@@ -1,0 +1,5 @@
+[2026-04-09 01:47:44] PHP Consumer received: PHP Test
+[2026-04-09 01:48:51] PHP Consumer received: Complete Demo
+[2026-04-09 01:51:05] PHP Consumer received: Message #3 from Publisher
+[2026-04-09 01:51:06] PHP Consumer received: Message #6 from Publisher
+[2026-04-09 01:51:08] PHP Consumer received: Message #9 from Publisher
